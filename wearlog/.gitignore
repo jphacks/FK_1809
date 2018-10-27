@@ -28,3 +28,5 @@
 .DS_Store
 /vendor/bundle/*
 /config/token.yaml
+
+lib/assets/token.txt
