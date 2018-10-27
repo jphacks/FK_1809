@@ -3,38 +3,38 @@ import numpy as np
 import datetime
 import subprocess
 import os
-from chainercv.links import SSD300
-from chainercv.datasets import voc_bbox_label_names
+#from chainercv.links import SSD300
+#from chainercv.datasets import voc_bbox_label_names
 from datetime import datetime
 
-model = SSD300(n_fg_class=len(voc_bbox_label_names), pretrained_model='voc0712')
+#model = SSD300(n_fg_class=len(voc_bbox_label_names), pretrained_model='voc0712')
 last_shot_time = datetime.now()
 
-def crop_human(img):
-    input_img = img.transpose(2, 0, 1)
-    bboxes, labels, score = model.predict([input_img])
+#def crop_human(img):
+#    input_img = img.transpose(2, 0, 1)
+#    bboxes, labels, score = model.predict([input_img])
     
-    if 14 in labels[0]:# labels[14] is human
-        img = img
-        print(bboxes)
-        bbox = [int(i) for i in bboxes[0][0]]
-        cropped_img = img[bbox[0]:bbox[2], bbox[1]:bbox[3], :]
-        return cropped_img, score[0][0]
+#    if 14 in labels[0]:# labels[14] is human
+#        img = img
+#        print(bboxes)
+#        bbox = [int(i) for i in bboxes[0][0]]
+#        cropped_img = img[bbox[0]:bbox[2], bbox[1]:bbox[3], :]
+#        return cropped_img, score[0][0]
     
-    return np.array([]), 0
+#    return np.array([]), 0
 
-def use_chainercv(frame):
-    cropped_img, score = crop_human(frame)
-    if len(cropped_img) > 0:
-        h, w, c = cropped_img.shape
-    print('Score: ' + str(score))
+#def use_chainercv(frame):
+#    cropped_img, score = crop_human(frame)
+#    if len(cropped_img) > 0:
+#        h, w, c = cropped_img.shape
+#    print('Score: ' + str(score))
 
-    if h > 0 and w > 0:
-        cv2.imshow('cropped', cropped_img)
-    else:
-        pass
+#    if h > 0 and w > 0:
+#        cv2.imshow('cropped', cropped_img)
+#    else:
+#        pass
         
-    cv2.imshow('img', frame)
+#    cv2.imshow('img', frame)
 
 def use_cascade(frame, face_cascade):
     global last_shot_time
@@ -62,11 +62,10 @@ def use_cascade(frame, face_cascade):
             cv2.rectangle(frame, (fx, fy), (fx+fw, fy+fh), (255, 0, 0), 2)
     '''
 
-    #for (fx, fy, fw, fh) in faces:
-        #cv2.rectangle(frame, (fx, fy), (fx+fw, fy+fh), (255, 0, 0), 2)
-
-    #for (mx, my, mw, mh) in human:
-        #cv2.rectangle(frame, (mx, my), (mx + mw, my + mh), (0, 0, 200), 3)
+    for (fx, fy, fw, fh) in faces:
+        cv2.rectangle(frame, (fx, fy), (fx+fw, fy+fh), (255, 0, 0), 2)
+    for (mx, my, mw, mh) in human:
+        cv2.rectangle(frame, (mx, my), (mx + mw, my + mh), (0, 0, 200), 3)
 
     if len(human) > 0 and len(faces) > 0:
         mx = human[0][0]
@@ -85,7 +84,9 @@ def use_cascade(frame, face_cascade):
             if (True or (datetime.now() - last_shot_time).total_seconds() > 5): 
                 cv2.imwrite(save_path +"/"+ now + ".jpg", dst)
                 last_shot_time = datetime.now()
-                subprocess.Popen(["./bin/rails", "image:import[" + now + '.jpg]'])
+                base = os.path.dirname(os.path.abspath(__file__))
+                rails_path = os.path.normpath(os.path.join(base, '../wearlog/bin/rails'))
+                subprocess.Popen([rails_path, "image:import[" + now + '.jpg]'])
 
             #print('mx: '+str(mx).rjust(4)+'\t'+' my: '+str(my).rjust(4)+'\t'
             #        +' mw: '+str(mw).rjust(4)+'\t'+' mh: '+str(mh).rjust(4)+'\t'
@@ -97,11 +98,13 @@ def use_cascade(frame, face_cascade):
 def main():
     cap = cv2.VideoCapture(0)
     #cap.set(cv2.CAP_PROP_FPS, 2)
-    cap.set(3,640)
-    cap.set(4,480)
+    cap.set(3,320)
+    cap.set(4,240)
 
     # Read cascade file
-    face_cascade = cv2.CascadeClassifier('../people_detect/haarcascade_frontalface_default.xml')
+    base = os.path.dirname(os.path.abspath(__file__))
+    face_path = os.path.normpath(os.path.join(base, 'haarcascade_frontalface_default.xml'))
+    face_cascade = cv2.CascadeClassifier(face_path)
 
     while(cap.isOpened()):
         # Get camera image
