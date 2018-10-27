@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :folder_items
+  resources :folders
   resources :users
   resources :events
   root 'images#home'
@@ -10,6 +12,7 @@ Rails.application.routes.draw do
       post :search
     end
     member do
+      get :add_folder
       get :set_rating
     end
   end

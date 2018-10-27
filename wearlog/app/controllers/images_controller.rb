@@ -100,6 +100,12 @@ class ImagesController < ApplicationController
     redirect_to image_path(@image)
   end
 
+  def add_folder
+    FolderItem.find_or_create_by(folder_id: params[:folder_id], image_id: params[:id])
+    @image = Image.find(params[:id])
+    redirect_to image_path(@image), notice: 'フォルダに追加しました'
+  end
+
   def oauth2callback
     service = Google::Apis::CalendarV3::CalendarService.new
     service.client_options.application_name = APPLICATION_NAME

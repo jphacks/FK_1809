@@ -7,16 +7,26 @@
           <span class="card-title" style="font-size: 20px; background-color: rgba(0,0,0,0.3);"><%= @image.created_at.strftime("%m/%d") %></span>
         </div>
         <div class="card-content" style="padding:5px">
-          <h5 style="margin-left: 20px;">
-            <% @image.rating ||= 0 %>
-            <% (1..5).to_a.each do |i| %>
-              <% if @image.rating >= i %>
-                <%= link_to "★", set_rating_image_path(rating: i), class: "rating-star" %> 
-              <% else %>
-                <%= link_to "☆", set_rating_image_path(rating: i), class: "rating-star" %> 
-              <% end %>
-            <% end %>
-          </h5>
+          <div class="row">
+            <div class="col s9">
+              <h5 style="margin-left: 20px;">
+                <% @image.rating ||= 0 %>
+                <% (1..5).to_a.each do |i| %>
+                  <% if @image.rating >= i %>
+                    <%= link_to "★", set_rating_image_path(rating: i), class: "rating-star" %> 
+                  <% else %>
+                    <%= link_to "☆", set_rating_image_path(rating: i), class: "rating-star" %> 
+                  <% end %>
+                <% end %>
+              </h5>
+            </div>
+            <div class="col s3">
+              <a class="modal-trigger" href="#modal1">
+                <i class="material-icons" style="font-size: 40px; color: darkcyan; margin-top: 8px;">add_circle</i>
+              </a>
+            </div>
+          </div>
+
         </div>
         <% events = Event.where(start_date: @image.wear_date) %>
         <% if events.count > 0 %>
@@ -33,3 +43,25 @@
     </div>
   </div>
 </div>
+
+<div id="modal1" class="modal bottom-sheet">
+  <div class="modal-content">
+    <h5 class="header">フォルダに追加</h5>
+    <div class="collection">
+      <%= link_to "新規フォルダ作成", favorites_images_path, class: "collection-item", style: "font-size:15px;" %>
+      <% Folder.all.each do |folder| %>
+        <%= link_to folder.title, add_folder_image_path(folder_id: folder.id), class: "collection-item", style: "font-size:15px;" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('turbolinks:load', function() {
+  if(instances){
+    instance.destroy();
+  }
+  var elems = document.querySelectorAll('.modal');
+  var instances = M.Modal.init(elems);
+});
+</script>

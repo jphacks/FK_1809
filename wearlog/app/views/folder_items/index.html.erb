@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Folder Items</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Folder</th>
+      <th>Image</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @folder_items.each do |folder_item| %>
+      <tr>
+        <td><%= folder_item.folder_id %></td>
+        <td><%= folder_item.image_id %></td>
+        <td><%= link_to 'Show', folder_item %></td>
+        <td><%= link_to 'Edit', edit_folder_item_path(folder_item) %></td>
+        <td><%= link_to 'Destroy', folder_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Folder Item', new_folder_item_path %>

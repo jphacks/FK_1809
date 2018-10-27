@@ -1,0 +1,16 @@
+<div class="container" style="padding:10px">
+  <div class="row">
+    <h5> <%= @folder.title %> </h5>
+    <hr class="border">
+    <% @folder.folder_items.each do |item| %>
+      <div class="col s4">
+        <div class="folder">
+          <% image = Image.find(item.image_id) %>
+          <p> <%= image.created_at.strftime("%m/%d") %> </p>
+          <%= link_to image_tag("wear_images/#{image.image_path}", style:"width:100%"), image_path(image) %><br>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>
