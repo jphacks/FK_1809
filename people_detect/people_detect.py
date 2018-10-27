@@ -2,6 +2,7 @@ import cv2
 import numpy as np 
 import datetime
 import subprocess
+import os
 from chainercv.links import SSD300
 from chainercv.datasets import voc_bbox_label_names
 from datetime import datetime
@@ -37,7 +38,8 @@ def use_chainercv(frame):
 
 def use_cascade(frame, face_cascade):
     global last_shot_time
-    save_path = '../people_detect/outputs/'
+    base = os.path.dirname(os.path.abspath(__file__))
+    save_path = os.path.normpath(os.path.join(base, '../wearlog/app/assets/images/wear_images'))
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray)
@@ -60,11 +62,11 @@ def use_cascade(frame, face_cascade):
             cv2.rectangle(frame, (fx, fy), (fx+fw, fy+fh), (255, 0, 0), 2)
     '''
 
-    for (fx, fy, fw, fh) in faces:
-        cv2.rectangle(frame, (fx, fy), (fx+fw, fy+fh), (255, 0, 0), 2)
+    #for (fx, fy, fw, fh) in faces:
+        #cv2.rectangle(frame, (fx, fy), (fx+fw, fy+fh), (255, 0, 0), 2)
 
-    for (mx, my, mw, mh) in human:
-        cv2.rectangle(frame, (mx, my), (mx + mw, my + mh), (0, 0, 200), 3)
+    #for (mx, my, mw, mh) in human:
+        #cv2.rectangle(frame, (mx, my), (mx + mw, my + mh), (0, 0, 200), 3)
 
     if len(human) > 0 and len(faces) > 0:
         mx = human[0][0]
@@ -81,9 +83,9 @@ def use_cascade(frame, face_cascade):
             dst = frame[my:my+mh, mx:mx+mw]
             print(str(my-int(fh/margin)) +", "+ str(my+mh) +", "+ str(mx) +", "+ str(mx+mw))
             if (True or (datetime.now() - last_shot_time).total_seconds() > 5): 
-                cv2.imwrite(save_path + now + ".jpg", dst)
+                cv2.imwrite(save_path +"/"+ now + ".jpg", dst)
                 last_shot_time = datetime.now()
-                subprocess.Popen(["./bin/rails", "image:import[" + save_path + now + '.jpg]'])
+                subprocess.Popen(["./bin/rails", "image:import[" + now + '.jpg]'])
 
             #print('mx: '+str(mx).rjust(4)+'\t'+' my: '+str(my).rjust(4)+'\t'
             #        +' mw: '+str(mw).rjust(4)+'\t'+' mh: '+str(mh).rjust(4)+'\t'
