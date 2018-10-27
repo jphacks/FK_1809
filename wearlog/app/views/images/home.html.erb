@@ -4,6 +4,9 @@
       <%= date.strftime("%d") %><br>
       <% unless image[0].blank? %>
         <%= link_to image_tag("wear_images/#{image[0].image_path}", style: "width:100%;", class: "scale-transition"), image_path(image[0].id) %><br>
+      <% else %>
+        <%# ここのheightは写真の大きさを確認後修正 %>
+        <div style="height: 50.36px"><span style="margin:1px"></span></div>
       <% end %>
       <div class="event">
         <% event = Event.find_by(start_date: date) %>
@@ -13,6 +16,8 @@
           <% else %>
             <span><%= event.title %></span>
           <% end %>
+        <% else %>
+          <span style="margin: 1px;"></span>
         <% end %>
       </div>
     <% end %>
