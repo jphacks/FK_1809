@@ -48,20 +48,34 @@
   <div class="modal-content">
     <h5 class="header">フォルダに追加</h5>
     <div class="collection">
-      <%= link_to "新規フォルダ作成", favorites_images_path, class: "collection-item", style: "font-size:15px;" %>
+      <%#= link_to "新規フォルダ作成", add_folder_image_path(folder_id: 0), class: "collection-item", style: "font-size:15px;" %>
+      <a class="collection-item modal-trigger" href="#modal2">新規フォルダ作成</a>
       <% Folder.all.each do |folder| %>
-        <%= link_to folder.title, add_folder_image_path(folder_id: folder.id), class: "collection-item", style: "font-size:15px;" %>
+        <p class="collection-item">
+          <%= link_to folder.title, add_folder_image_path(folder_id: folder.id), style: "font-size:20px;" %>
+          <% if FolderItem.where(image_id: @image.id).count > 0 %>
+            <i class="material-icons" style="font-size: 30px; color: darkcyan; position: relative; top: 3px;">check</i>
+          <% end %>
+        </p>
       <% end %>
     </div>
   </div>
 </div>
 
+<div id="modal2" class="modal">
+  <%= form_tag(add_folder_image_path) do %>
+    <div class="modal-content">
+      <h5>フォルダ名入力</h5>
+        <%= text_field_tag "folder-title" %>
+    </div>
+    <div class="modal-footer">
+      <%= submit_tag "保存", class: "modal-close waves-effect waves-green btn-flat" %>
+    </div>
+  <% end %>
+</div>
+
 <script>
-document.addEventListener('turbolinks:load', function() {
-  if(instances){
-    instance.destroy();
-  }
-  var elems = document.querySelectorAll('.modal');
-  var instances = M.Modal.init(elems);
+document.addEventListener('DOMContentLoaded', function() {
+  $('.modal').modal();
 });
 </script>
