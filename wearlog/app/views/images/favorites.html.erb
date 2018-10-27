@@ -1,4 +1,10 @@
 <div class="container">
+  <% if @total_count <= 0 %>
+    <div class="col s12">
+      <h5 style="color: gray;">お気に入りがありません</h5>
+    </div>
+  <% end %>
+
   <% (1..5).reverse_each do |i| %>
     <% if @stars[i].size > 0 %>
       <h5>

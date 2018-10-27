@@ -1,0 +1,51 @@
+<div class="card horizontal">
+  <div class="card-image">
+    <% if @events.count > 0 %>
+      <% prev_event = Event.where(title: @events.first.title).order("start_date desc").second %>
+      <% prev_wear = Image.find_by(wear_date: prev_event.start_date) %>
+      <% if prev_wear %>
+        <%= link_to image_tag("wear_images/#{prev_wear.image_path}"), image_path(prev_wear.id) %><br>
+      <% else %>
+        <%= image_tag("no_wear.jpg") %><br>
+      <% end %>
+      <span class="card-title" style="padding: 15px; font-size: 20px; width: 100%; background-color: rgba(0,0,0,0.4);">前回の服装</span>
+    <% else %>
+      <% prev_wear = Image.find_by(wear_date: 1.week.ago) %>
+      <% if prev_wear %>
+        <%= link_to image_tag("wear_images/#{prev_wear.image_path}"), image_path(prev_wear.id) %><br>
+      <% else %>
+        <%= image_tag("no_wear.jpg") %><br>
+      <% end %>
+      <span class="card-title" style="padding: 15px; font-size: 20px; width: 100%; background-color: rgba(0,0,0,0.4);">先週の服装</span>
+    <% end %>
+  </div>
+  <div class="card-stacked">
+    <div class="card-content">
+      <p style="font-size:15px; margin-bottom:10px;">今日の天気</p>
+      <% w = Weather.today %>
+      <%# w = nil %>
+      <% if w %>
+        <% if w[:weather] == "Clear" %>
+          <i class="material-icons">wb_sunny</i>
+        <% elsif w[:weather] == "Clouds" %>
+          <i class="material-icons">wb_cloudy</i>
+        <% else %>
+          <i class="material-icons">opacity</i>
+        <% end %>
+        <span style="font-size:15px; margin-bottom:10px;">
+          <%= w[:high] %>℃ / <%= w[:low] %>℃
+        </span>
+      <% end %>
+    </div>
+    <% if @events.count > 0 %>
+      <div>
+        <p style="margin-left:20px; font-size:15px;">今日の予定</p>
+      </div>
+      <% @events.each do |event| %>
+        <div class="card-action">
+          <%= link_to event.title, search_images_path(keyword: event.title), method: :post %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
