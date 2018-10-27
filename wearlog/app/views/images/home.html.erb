@@ -26,6 +26,12 @@
     <%= link_to "more...", images_path, style: "font-size:15px;" %><br>
   </div>
   <hr class="border">
+  <% color_rate = [['#ea5959',60],['#eae159',30],['#60ea59',10]] %>
+  <div class="color_rate">
+    <% color_rate.each do |color| %>
+      <div style="height: 10px; width:<%= color[1] %>%; background-color: <%= color[0] %>"></div>
+    <% end %>
+  </div>
   <br>
 
   <div class="col s12 m7">
