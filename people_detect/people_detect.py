@@ -1,6 +1,7 @@
 import cv2
 import numpy as np 
 import datetime
+import subprocess
 from chainercv.links import SSD300
 from chainercv.datasets import voc_bbox_label_names
 
@@ -33,7 +34,7 @@ def use_chainercv(frame):
     cv2.imshow('img', frame)
 
 def use_cascade(frame, face_cascade):
-    save_path = 'outputs/'
+    save_path = '/home/pi/FK_1809/people_detect/outputs/'
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray)
@@ -73,12 +74,14 @@ def use_cascade(frame, face_cascade):
         fw = faces[0][2]
         fh = faces[0][3]
 
-        dst = frame[my:my+mh, mx:mx+mw]
-
-        if (mx < fx) and (my - int(fh/margin) < fy) and (mx + mw > fx + fw) and (my + mh > fy + fh):
+        dst = frame[my-int(fh/margin):my+mh, mx:mx+mw]
+        if (mx < fx) and (my - fh < fy) and (mx + mw > fx + fw) and (my + mh > fy + fh):
             dst = frame[my-int(fh/margin):my+mh, mx:mx+mw]
             #cv2.imwrite(save_path + now + ".jpg", frame)
             cv2.imwrite(save_path + now + ".jpg", dst)
+
+            #import to db
+            subprocess.call(["/home/pi/FK_1809/wearlog/bin/rails", "image:import[" + save_path + now + '.jpg] &'])
 
             print('mx: '+str(mx).rjust(4)+'\t'+' my: '+str(my).rjust(4)+'\t'
                     +' mw: '+str(mw).rjust(4)+'\t'+' mh: '+str(mh).rjust(4)+'\t'
@@ -90,9 +93,11 @@ def use_cascade(frame, face_cascade):
 def main():
     cap = cv2.VideoCapture(0)
     #cap.set(cv2.CAP_PROP_FPS, 2)
+    cap.set(3,320)
+    cap.set(4,240)
 
     # Read cascade file
-    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+    face_cascade = cv2.CascadeClassifier('/home/pi/FK_1809/people_detect/haarcascade_frontalface_default.xml')
 
     while(cap.isOpened()):
         # Get camera image
