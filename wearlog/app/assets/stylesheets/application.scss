@@ -8,8 +8,7 @@
 // $secondary-color: color("green", "base") !default;
 @import 'materialize';
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
-@import url('https://fonts.googleapis.com/css?family=ABeeZee|PT+Sans');
-
+@import url('https://fonts.googleapis.com/css?family=ABeeZee|Exo+2|Orbitron');
 
 nav {
   background-color: #F1F1F1;
@@ -69,8 +68,9 @@ a:hover {
 
 nav {
   .brand-logo {
-    font-family: 'PT Sans', sans-serif;
+    font-family: 'Exo 2', sans-serif;
     color: #ee6e73;
+    font-size: 25px;
   }
   .search_icon {
     color: #ee6e72;
