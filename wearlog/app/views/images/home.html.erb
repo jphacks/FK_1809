@@ -3,7 +3,11 @@
     <%= week_calendar(number_of_weeks: 1, attribute: :created_at, events: @images) do |date, image|%>
       <%= date.strftime("%d") %><br>
       <% unless image[0].blank? %>
-        <%= link_to image_tag("wear_images/#{image[0].image_path}", style: "width:100%;", class: "scale-transition"), image_path(image[0].id) %><br>
+        <% if File.exist? "#{Rails.root}/app/assets/images/wear_images/#{image[0].image_path}" %>
+          <%= link_to image_tag("wear_images/#{image[0].image_path}", style: "width:100%;", class: "scale-transition"), image_path(image[0].id) %><br>
+        <% else %>
+          <%= image_tag("no_wear.jpg", style: "width:100%;") %><br>
+        <% end %>
       <% else %>
         <%# ここのheightは写真の大きさを確認後修正 %>
         <div style="height: 50.36px"><span style="margin:1px"></span></div>
