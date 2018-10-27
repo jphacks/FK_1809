@@ -8,7 +8,8 @@
 // $secondary-color: color("green", "base") !default;
 @import 'materialize';
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
-@import url('https://fonts.googleapis.com/css?family=ABeeZee|Imprima');
+@import url('https://fonts.googleapis.com/css?family=ABeeZee|PT+Sans');
+
 
 nav {
   background-color: #F1F1F1;
@@ -18,11 +19,11 @@ nav {
   width: 100%;
   height: 56px;
   line-height: 56px;
+  z-index: 10;
 }
 
 .simple-calendar {
   width: 100%;
-  padding-top: 56px;
   .calendar-heading {
     text-align: center;
     margin: 10px auto 0px;
@@ -47,8 +48,7 @@ nav {
   color: $primary-color;
 }
 a:hover {
-  opacity: 0.5;
-  background-color: $primary-color;
+  background-color: rgba(0,0,0,0) !important;
 }
 
 .border {
@@ -63,7 +63,7 @@ a:hover {
 
 nav {
   .brand-logo {
-    font-family: 'Imprima', sans-serif;
+    font-family: 'PT Sans', sans-serif;
     color: #ee6e73;
   }
   .search_icon {
@@ -71,6 +71,7 @@ nav {
   }
 }
 body {
+  padding-top: 56px;
   font-family: 'ABeeZee', sans-serif;
   background-color: #FAFAFA;
 }
