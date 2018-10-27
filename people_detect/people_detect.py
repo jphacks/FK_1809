@@ -47,10 +47,20 @@ def use_cascade(frame, face_cascade):
 
     now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
+    margin = 5
+
+    '''
     for (mx, my, mw, mh) in human:
         cv2.rectangle(frame, (mx, my), (mx + mw, my + mh), (0, 0, 200), 3)
         for (fx, fy, fw, fh) in faces:
             cv2.rectangle(frame, (fx, fy), (fx+fw, fy+fh), (255, 0, 0), 2)
+    '''
+
+    for (fx, fy, fw, fh) in faces:
+        cv2.rectangle(frame, (fx, fy), (fx+fw, fy+fh), (255, 0, 0), 2)
+
+    for (mx, my, mw, mh) in human:
+        cv2.rectangle(frame, (mx, my), (mx + mw, my + mh), (0, 0, 200), 3)
 
     if len(human) > 0 and len(faces) > 0:
         mx = human[0][0]
@@ -65,8 +75,8 @@ def use_cascade(frame, face_cascade):
 
         dst = frame[my:my+mh, mx:mx+mw]
 
-        if (mx < fx) and (my < fy) and (mx + mw > fx + fw) and (my + mh > fy + fh):
-            dst = frame[my-int(mh/4):my+mh, mx:mx+mw]
+        if (mx < fx) and (my - int(fh/margin) < fy) and (mx + mw > fx + fw) and (my + mh > fy + fh):
+            dst = frame[my-int(fh/margin):my+mh, mx:mx+mw]
             #cv2.imwrite(save_path + now + ".jpg", frame)
             cv2.imwrite(save_path + now + ".jpg", dst)
 
