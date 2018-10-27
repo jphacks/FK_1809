@@ -36,7 +36,6 @@ def use_cascade(frame, face_cascade):
     save_path = 'outputs/'
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    hist_gray = cv2.equalizeHist(gray)
     faces = face_cascade.detectMultiScale(gray)
 
     # Create clf use Hog feature and SVM
@@ -67,7 +66,7 @@ def use_cascade(frame, face_cascade):
         dst = frame[my:my+mh, mx:mx+mw]
 
         if (mx < fx) and (my < fy) and (mx + mw > fx + fw) and (my + mh > fy + fh):
-            dst = frame[my:my+mh, mx:mx+mw]
+            dst = frame[my-int(mh/4):my+mh, mx:mx+mw]
             #cv2.imwrite(save_path + now + ".jpg", frame)
             cv2.imwrite(save_path + now + ".jpg", dst)
 
