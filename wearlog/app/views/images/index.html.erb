@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="row">
+    <%= month_calendar(attribute: :created_at, events: @images) do |date, image|%>
+      <%= date.strftime("%d") %>
+      <br>
+      <% unless image[0].blank? %>
+        <%= link_to image_tag("wear_images/#{image[0].image_path}", style: "width:100%;"), image_path(image[0].id) %><br>
+      <% end %>
+      <% event = Event.find_by(start_date: date) %>
+      <%= event.title if event %>
+    <% end %>
+  </div>
+<br>

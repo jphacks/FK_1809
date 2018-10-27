@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wearlog</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <div id="navbar-title">
+          <a href="<%= root_path %>" style="margin-left:10px; font-size:25px;" class="brand-logo left">WearLog</a>
+          <label id="search_icon">
+            <i class="material-icons right" style="margin-right: 10px; color: white;">search</i>
+          </label>
+        </div>
+        <%= form_tag(search_images_path, id:"navform", style:"display: none;") do %>
+          <div class="input-field">
+            <%= search_field_tag "keyword", "", id: "search" %>
+            <label class="label-icon active" for="search"><i class="material-icons">search</i></label>
+            <i class="material-icons">close</i>
+          </div>
+        <% end %>
+      </div>
+    </nav>
+
+    <% if notice %>
+      <script>
+        M.toast({html: '<%= notice %>'})
+      </script>
+    <% end %>
+
+    <%= yield %>
+  </body>
+</html>
+
+<script>
+$(document).on('turbolinks:load', function(){
+  $("#search_icon").click(function(){
+    $("#navbar-title").css("display","none")
+    $("#navform").css("display","inline")
+    $("#search").focus()
+  })
+  $("#search").blur(function(){
+    $("#navbar-title").css("display","inline")
+    $("#navform").css("display","none")
+  })
+});
+</script>

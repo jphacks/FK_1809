@@ -1,0 +1,43 @@
+<div class="simple-calendar">
+  <div class="calendar-heading">
+    <a href="<%= calendar.url_for_previous_view %>"> <i class="material-icons">keyboard_arrow_left</i> </a>
+    <span class="calendar-title"><%= t('date.abbr_month_names')[start_date.month] %> <%= start_date.year %></span>
+    <a href="<%= calendar.url_for_next_view %>"> <i class="material-icons">keyboard_arrow_right</i> </a>
+  </div>
+
+  <hr class="calendar_border">
+
+  <table class="table table-striped" style="border-style: none">
+    <thead>
+      <tr>
+        <% date_range.slice(0, 7).each do |day| %>
+          <% if t('date.abbr_day_names')[day.wday] == 'Sun' %>
+            <th class="week" style="color: #EA6F90; border-style: none"><%= t('date.abbr_day_names')[day.wday] %></th>
+          <% else %>
+            <th class="week" style="color: #939393; border-style: none"><%= t('date.abbr_day_names')[day.wday] %></th>
+          <% end %>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% date_range.each_slice(7) do |week| %>
+        <tr>
+          <% week.each do |day| %>
+            <%= content_tag :td, class: calendar.td_classes_for(day), style: "border-style: none;" do %>
+              <% if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(block) %>
+                <% capture_haml(day, sorted_events.fetch(day, []), &block) %>
+              <% else %>
+                <% if t('date.abbr_day_names')[day.wday] == 'Sun' %>
+                  <div class="day" style="color: #EA6F90;"><% block.call day, sorted_events.fetch(day, []) %></div>
+                <% else %>
+                  <div class="day" style="color: #939393;"><% block.call day, sorted_events.fetch(day, []) %></div>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row" style="margin-top:10px;">
+    <div class="col s12  offset-m2 m8">
+      <div class="card">
+        <div class="card-image" style="background-color: lightgray;">
+          <%= image_tag "wear_images/#{@image.image_path}" %><br>
+          <span class="card-title" style="font-size: 20px; background-color: rgba(0,0,0,0.3);"><%= @image.created_at.strftime("%m/%d") %></span>
+        </div>
+        <div class="card-content" style="padding:5px">
+          <h5 style="margin-left: 20px;">
+            <% @image.rating ||= 0 %>
+            <% (1..5).to_a.each do |i| %>
+              <% if @image.rating >= i %>
+                <%= link_to "★", set_rating_image_path(rating: i), class: "rating-star" %> 
+              <% else %>
+                <%= link_to "☆", set_rating_image_path(rating: i), class: "rating-star" %> 
+              <% end %>
+            <% end %>
+          </h5>
+        </div>
+        <% events = Event.where(start_date: @image.wear_date) %>
+        <% if events.count > 0 %>
+          <div>
+            <p style="margin-left:20px; font-size:20px;">この日のイベント</p>
+          </div>
+          <% events.each do |event| %>
+            <div class="card-action">
+              <%= link_to event.title, search_images_path(keyword: event.title), method: :post %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
