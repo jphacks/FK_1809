@@ -4,8 +4,10 @@ import datetime
 import subprocess
 from chainercv.links import SSD300
 from chainercv.datasets import voc_bbox_label_names
+from datetime import datetime
 
 model = SSD300(n_fg_class=len(voc_bbox_label_names), pretrained_model='voc0712')
+last_shot_time = datetime.now()
 
 def crop_human(img):
     input_img = img.transpose(2, 0, 1)
@@ -34,7 +36,8 @@ def use_chainercv(frame):
     cv2.imshow('img', frame)
 
 def use_cascade(frame, face_cascade):
-    save_path = '/home/pi/FK_1809/people_detect/outputs/'
+    global last_shot_time
+    save_path = '../people_detect/outputs/'
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray)
@@ -46,9 +49,9 @@ def use_cascade(frame, face_cascade):
 
     human, r = hog.detectMultiScale(gray, **hogParam)
 
-    now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-    margin = 5
+    margin = 1
 
     '''
     for (mx, my, mw, mh) in human:
@@ -74,30 +77,29 @@ def use_cascade(frame, face_cascade):
         fw = faces[0][2]
         fh = faces[0][3]
 
-        dst = frame[my-int(fh/margin):my+mh, mx:mx+mw]
         if (mx < fx) and (my - int(fh/margin) < fy) and (mx + mw > fx + fw) and (my + mh > fy + fh):
-            dst = frame[my-int(fh/margin):my+mh, mx:mx+mw]
-            #cv2.imwrite(save_path + now + ".jpg", frame)
-            cv2.imwrite(save_path + now + ".jpg", dst)
+            dst = frame[my:my+mh, mx:mx+mw]
+            print(str(my-int(fh/margin)) +", "+ str(my+mh) +", "+ str(mx) +", "+ str(mx+mw))
+            if (True or (datetime.now() - last_shot_time).total_seconds() > 5): 
+                cv2.imwrite(save_path + now + ".jpg", dst)
+                last_shot_time = datetime.now()
+                subprocess.Popen(["./bin/rails", "image:import[" + save_path + now + '.jpg]'])
 
-            #import to db
-            subprocess.call(["/home/pi/FK_1809/wearlog/bin/rails", "image:import[" + save_path + now + '.jpg] &'])
-
-            print('mx: '+str(mx).rjust(4)+'\t'+' my: '+str(my).rjust(4)+'\t'
-                    +' mw: '+str(mw).rjust(4)+'\t'+' mh: '+str(mh).rjust(4)+'\t'
-                    +' fx: '+str(fx).rjust(4)+'\t'+' fy: '+str(fy).rjust(4)+'\t'
-                    +' fw: '+str(fw).rjust(4)+'\t'+' fh: '+str(fh).rjust(4))
+            #print('mx: '+str(mx).rjust(4)+'\t'+' my: '+str(my).rjust(4)+'\t'
+            #        +' mw: '+str(mw).rjust(4)+'\t'+' mh: '+str(mh).rjust(4)+'\t'
+            #        +' fx: '+str(fx).rjust(4)+'\t'+' fy: '+str(fy).rjust(4)+'\t'
+            #        +' fw: '+str(fw).rjust(4)+'\t'+' fh: '+str(fh).rjust(4))
 
     cv2.imshow('cascade', frame)
 
 def main():
     cap = cv2.VideoCapture(0)
     #cap.set(cv2.CAP_PROP_FPS, 2)
-    cap.set(3,320)
-    cap.set(4,240)
+    cap.set(3,640)
+    cap.set(4,480)
 
     # Read cascade file
-    face_cascade = cv2.CascadeClassifier('/home/pi/FK_1809/people_detect/haarcascade_frontalface_default.xml')
+    face_cascade = cv2.CascadeClassifier('../people_detect/haarcascade_frontalface_default.xml')
 
     while(cap.isOpened()):
         # Get camera image
