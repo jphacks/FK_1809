@@ -8,7 +8,8 @@
 // $secondary-color: color("green", "base") !default;
 @import 'materialize';
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
-@import url('https://fonts.googleapis.com/css?family=ABeeZee|Imprima');
+@import url('https://fonts.googleapis.com/css?family=ABeeZee|PT+Sans');
+
 
 nav {
   background-color: #F1F1F1;
@@ -63,7 +64,7 @@ a:hover {
 
 nav {
   .brand-logo {
-    font-family: 'Imprima', sans-serif;
+    font-family: 'PT Sans', sans-serif;
     color: #ee6e73;
   }
   .search_icon {

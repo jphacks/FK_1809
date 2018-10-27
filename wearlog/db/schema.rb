@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 2018_10_27_024927) do
 
   create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "user_id", limit: 11
     t.string "original_id"
     t.string "title"
     t.date "start_date"
