@@ -27,6 +27,17 @@
           </div>
         <% end %>
       </div>
+      <div class="footer_nav">
+        <%= link_to root_path, class: "collection-item", style: "font-size:15px;" do %>
+          <i class="material-icons" style="color:<%='#ee6e72' if (controller.controller_name + "/" + controller.action_name).in?(['images/home', 'images/index']) %>">home</i>
+        <% end %>
+        <%= link_to favorites_images_path, class: "collection-item", style: "font-size:15px;" do %>
+          <i class="material-icons" style="color:<%='#ee6e72' if controller.controller_name + "/" + controller.action_name == "images/favorites" %>">favorite</i>
+        <% end %>
+        <%= link_to folders_path, class: "collection-item", style: "font-size:15px;" do %>
+          <i class="material-icons" style="color:<%='#ee6e72' if controller.controller_name + "/" + controller.action_name == "folders/index" %>">folder</i>
+        <% end %>
+      </div>
     </nav>
 
     <% if notice %>
@@ -50,5 +61,6 @@ $(document).on('turbolinks:load', function(){
     $("#navbar-title").css("display","inline")
     $("#navform").css("display","none")
   })
+  $('.tabs').tabs();
 });
 </script>
