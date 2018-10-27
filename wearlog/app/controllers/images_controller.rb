@@ -74,7 +74,7 @@ class ImagesController < ApplicationController
   def home
     @events = Event.where(start_date: Date.current)
     @images = Image.order("created_at desc")
-    Weather.today
+    # Weather.today
   end
 
   def search
@@ -88,8 +88,10 @@ class ImagesController < ApplicationController
 
   def favorites
     @stars = {}
+    @total_count = 0
     for i in (1..5) do
       @stars[i] = Image.where(rating: i).order("rating desc")
+      @total_count += @stars[i].size
     end
   end
 

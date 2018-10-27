@@ -46,9 +46,8 @@
 
 <div id="modal1" class="modal bottom-sheet">
   <div class="modal-content">
-    <h5 class="header">フォルダに追加</h5>
+    <h5 class="header" style="margin-left: 5px; margin-bottom: 30px;">フォルダに追加</h5>
     <div class="collection">
-      <%#= link_to "新規フォルダ作成", add_folder_image_path(folder_id: 0), class: "collection-item", style: "font-size:15px;" %>
       <a class="collection-item modal-trigger" href="#modal2">新規フォルダ作成</a>
       <% Folder.all.each do |folder| %>
         <p class="collection-item">

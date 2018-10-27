@@ -5,11 +5,13 @@ class Weather < ApplicationRecord
     require 'json'
 
     appid = "b6907d289e10d714a6e88b30761fae22"
-    begin
-      uri = URI.parse("https://samples.openweathermap.org/data/2.5/forecast?q=Kagoshima&appid=#{appid}")
-      json = Net::HTTP.get(uri)
-      result = JSON.parse(json)
-    rescue
+    result = Rails.cache.fetch("weather_data", expired_in: 1.hour) do
+      begin
+        uri = URI.parse("https://samples.openweathermap.org/data/2.5/forecast?q=Kagoshima&appid=#{appid}")
+        json = Net::HTTP.get(uri)
+        result = JSON.parse(json)
+      rescue
+      end
     end
 
     if result then
