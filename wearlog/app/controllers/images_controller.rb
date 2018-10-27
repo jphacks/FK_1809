@@ -74,7 +74,7 @@ class ImagesController < ApplicationController
   def home
     @events = Event.where(start_date: Date.current)
     @images = Image.order("created_at desc")
-    Weather.today
+    # Weather.today
   end
 
   def search
@@ -86,11 +86,34 @@ class ImagesController < ApplicationController
     end
   end
 
+  def favorites
+    @stars = {}
+    @total_count = 0
+    for i in (1..5) do
+      @stars[i] = Image.where(rating: i).order("rating desc")
+      @total_count += @stars[i].size
+    end
+  end
+
   def set_rating
     @image = Image.find(params[:id])
     @image.rating = params[:rating]
-    @image.save
-    redirect_to image_path(@image)
+    if @image.save then
+    else
+      p @image.errors.to_yaml
+    end
+    redirect_to image_path(@image), notice: '評価を付けました'
+  end
+
+  def add_folder
+    if params[:folder_id].to_i == 0 then
+      @folder = Folder.create(title: params["folder-title"])
+    else
+      @folder = Folder.find(params[:folder_id])
+    end
+    FolderItem.find_or_create_by(folder_id: @folder.id, image_id: params[:id])
+    @image = Image.find(params[:id])
+    redirect_to image_path(@image), notice: 'フォルダに追加しました'
   end
 
   def oauth2callback

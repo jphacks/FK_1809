@@ -1,0 +1,27 @@
+<%= form_with(model: folder_item, local: true) do |form| %>
+  <% if folder_item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(folder_item.errors.count, "error") %> prohibited this folder_item from being saved:</h2>
+
+      <ul>
+      <% folder_item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :folder_id %>
+    <%= form.number_field :folder_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :image_id %>
+    <%= form.number_field :image_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

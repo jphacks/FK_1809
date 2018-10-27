@@ -1,0 +1,31 @@
+<div class="container">
+  <% if @total_count <= 0 %>
+    <div class="col s12">
+      <h5 style="color: gray;">お気に入りがありません</h5>
+    </div>
+  <% end %>
+
+  <% (1..5).reverse_each do |i| %>
+    <% if @stars[i].size > 0 %>
+      <h5>
+        <% (1..5).to_a.each do |star_i| %>
+          <% if star_i <= i %>
+            ★
+          <% end %>
+        <% end %>
+      </h5>
+      <hr class="border">
+
+      <div class="row" style="margin-top:15px; margin-bottom:15px;">
+        <% @stars[i].each do |image| %>
+          <div class="col s4">
+            <p> <%= image.created_at.strftime("%m/%d") %> </p>
+            <%= link_to image_tag("wear_images/#{image.image_path}", style: "width:100%;"), image_path(image.id) %><br>
+          </div>
+        <% end %>
+      </div>
+      <br>
+    <% end %>
+
+  <% end %>
+</div>

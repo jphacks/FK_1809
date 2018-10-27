@@ -4,9 +4,22 @@
       <%= date.strftime("%d") %><br>
       <% unless image[0].blank? %>
         <%= link_to image_tag("wear_images/#{image[0].image_path}", style: "width:100%;", class: "scale-transition"), image_path(image[0].id) %><br>
+      <% else %>
+        <%# ここのheightは写真の大きさを確認後修正 %>
+        <div style="height: 50.36px"><span style="margin:1px"></span></div>
       <% end %>
-      <% event = Event.find_by(start_date: date) %>
-      <%= event.title if event %>
+      <div class="event">
+        <% event = Event.find_by(start_date: date) %>
+        <% if event %>
+          <% if event.title.length > 3 %>
+            <span><%= event.title.slice(0..1) %>...</span>
+          <% else %>
+            <span><%= event.title %></span>
+          <% end %>
+        <% else %>
+          <span style="margin: 1px;"></span>
+        <% end %>
+      </div>
     <% end %>
   </div>
   <div style="text-align:right;">
@@ -16,61 +29,6 @@
   <br>
 
   <div class="col s12 m7">
-    <div class="card horizontal">
-      <div class="card-image">
-        <% if @events.count > 0 %>
-          <% prev_event = Event.where(title: @events.first.title).order("start_date desc").second %>
-          <% prev_wear = Image.find_by(wear_date: prev_event.start_date) %>
-          <% if prev_wear %>
-            <%= link_to image_tag("wear_images/#{prev_wear.image_path}"), image_path(prev_wear.id) %><br>
-          <% else %>
-            <%= image_tag("no_wear.jpg") %><br>
-          <% end %>
-          <span class="card-title" style="padding: 15px; font-size: 20px; width: 100%; background-color: rgba(0,0,0,0.4);">前回の服装</span>
-        <% else %>
-          <% prev_wear = Image.find_by(wear_date: 1.week.ago) %>
-          <% if prev_wear %>
-            <%= link_to image_tag("wear_images/#{prev_wear.image_path}"), image_path(prev_wear.id) %><br>
-          <% else %>
-            <%= image_tag("no_wear.jpg") %><br>
-          <% end %>
-          <span class="card-title" style="padding: 15px; font-size: 20px; width: 100%; background-color: rgba(0,0,0,0.4);">先週の服装</span>
-        <% end %>
-      </div>
-      <div class="card-stacked">
-        <div class="card-content">
-          <p style="font-size:15px; margin-bottom:10px;">今日の天気</p>
-          <% w = Weather.today %>
-          <% if w %>
-            <% if w[:weather] == "Clear" %>
-              <i class="material-icons">wb_sunny</i>
-            <% elsif w[:weather] == "Clouds" %>
-              <i class="material-icons">wb_cloudy</i>
-            <% else %>
-              <i class="material-icons">opacity</i>
-            <% end %>
-            <span style="font-size:15px; margin-bottom:10px;">
-              <%= w[:high] %>℃ / <%= w[:low] %>℃
-            </span>
-          <% end %>
-        </div>
-        <% if @events.count > 0 %>
-          <div>
-            <p style="margin-left:20px; font-size:15px;">今日の予定</p>
-          </div>
-          <% @events.each do |event| %>
-            <div class="card-action">
-              <%= link_to event.title, search_images_path(keyword: event.title), method: :post %>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-  <div class="collection">
-    <%= link_to "お気に入り一覧", "", class: "collection-item", style: "font-size:15px;" %>
-    <%= link_to "フォルダ一覧", "", class: "collection-item", style: "font-size:15px;" %>
-    <%= link_to "Googleカレンダー連携", get_calendar_images_path, class: "collection-item", style: "font-size:15px;" %>
+    <%= render(partial: 'widget', cached: true) %>
   </div>
 <br>

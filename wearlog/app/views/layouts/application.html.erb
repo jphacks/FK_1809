@@ -6,17 +6,17 @@
     <%= csp_meta_tag %>
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   </head>
 
-  <body>
+  <body data-turbolinks="<%='false' %>">
     <nav>
       <div class="nav-wrapper">
         <div id="navbar-title">
-          <a href="<%= root_path %>" style="margin-left:10px; font-size:25px;" class="brand-logo left">WearLog</a>
+          <a href="<%= root_path %>" style="margin-left:10px;" class="brand-logo left">WearLog</a>
           <label id="search_icon">
-            <i class="material-icons right" style="margin-right: 10px; color: white;">search</i>
+            <i class="search_icon material-icons right" style="margin-right: 10px;">search</i>
           </label>
         </div>
         <%= form_tag(search_images_path, id:"navform", style:"display: none;") do %>
@@ -25,6 +25,17 @@
             <label class="label-icon active" for="search"><i class="material-icons">search</i></label>
             <i class="material-icons">close</i>
           </div>
+        <% end %>
+      </div>
+      <div class="footer_nav">
+        <%= link_to root_path, class: "collection-item", style: "font-size:15px;" do %>
+          <i class="material-icons" style="color:<%='#ee6e72' if (controller.controller_name + "/" + controller.action_name).in?(['images/home', 'images/index']) %>">home</i>
+        <% end %>
+        <%= link_to favorites_images_path, class: "collection-item", style: "font-size:15px;" do %>
+          <i class="material-icons" style="color:<%='#ee6e72' if controller.controller_name + "/" + controller.action_name == "images/favorites" %>">favorite</i>
+        <% end %>
+        <%= link_to folders_path, class: "collection-item", style: "font-size:15px;" do %>
+          <i class="material-icons" style="color:<%='#ee6e72' if controller.controller_name + "/" + controller.action_name == "folders/index" %>">folder</i>
         <% end %>
       </div>
     </nav>
@@ -50,5 +61,6 @@ $(document).on('turbolinks:load', function(){
     $("#navbar-title").css("display","inline")
     $("#navform").css("display","none")
   })
+  $('.tabs').tabs();
 });
 </script>
