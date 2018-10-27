@@ -6,8 +6,16 @@
       <% unless image[0].blank? %>
         <%= link_to image_tag("wear_images/#{image[0].image_path}", style: "width:100%;"), image_path(image[0].id) %><br>
       <% end %>
-      <% event = Event.find_by(start_date: date) %>
-      <%= event.title if event %>
+      <div class="event">
+        <% event = Event.find_by(start_date: date) %>
+        <% if event %>
+          <% if event.title.length > 3 %>
+            <span><%= event.title.slice(0..1) %>...</span>
+          <% else %>
+            <span><%= event.title %></span>
+          <% end %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 <br>
