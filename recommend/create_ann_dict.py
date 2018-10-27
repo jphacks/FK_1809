@@ -17,7 +17,7 @@ def crop_img(input_img, query_label="tops"):
 
 def main():
   parser = argparse.ArgumentParser(description='create ann model')
-  parser.add_argument('--imgdir', '-d', type=str, default="",
+  parser.add_argument('--imgdir', '-d', type=str, default="D:/GitHub/FK_1809/wearlog/app/assets/images/wear_images",
                         help='image directry')
   parser.add_argument('--genre', '-g', type=str, default="tops",
                         help='genre')
