@@ -86,11 +86,24 @@ class ImagesController < ApplicationController
     end
   end
 
+  def favorites
+    @stars = {}
+    for i in (1..5) do
+      @stars[i] = Image.where(rating: i).order("rating desc")
+    end
+  end
+
   def set_rating
     @image = Image.find(params[:id])
     @image.rating = params[:rating]
     @image.save
     redirect_to image_path(@image)
+  end
+
+  def add_folder
+    FolderItem.find_or_create_by(folder_id: params[:folder_id], image_id: params[:id])
+    @image = Image.find(params[:id])
+    redirect_to image_path(@image), notice: 'フォルダに追加しました'
   end
 
   def oauth2callback

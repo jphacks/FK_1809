@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Folder:</strong>
+  <%= @folder_item.folder_id %>
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <%= @folder_item.image_id %>
+</p>
+
+<%= link_to 'Edit', edit_folder_item_path(@folder_item) %> |
+<%= link_to 'Back', folder_items_path %>

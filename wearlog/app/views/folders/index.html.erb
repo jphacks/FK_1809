@@ -1,0 +1,34 @@
+<style>
+.folder {
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px #dedede solid;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+</style>
+
+<div class="container" style="padding:10px">
+  <div class="row">
+    <% if @folders.count <= 0 %>
+      <div class="col s12">
+        <h5 style="color: gray;">フォルダがありません</h5>
+      </div>
+    <% end %>
+
+    <% @folders.each do |folder| %>
+      <div class="col s6 m4">
+        <div class="folder">
+          <% image = Image.find(folder.folder_items.first.image_id) %>
+          <%= link_to image_tag("wear_images/#{image.image_path}", style:"width:100%"), folder_path(folder) %><br>
+        </div>
+        <span><%= folder.title %></span>
+      </div>
+    <% end %>
+
+  </div>
+</div>
