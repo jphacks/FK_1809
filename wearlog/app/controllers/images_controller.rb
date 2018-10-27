@@ -86,6 +86,13 @@ class ImagesController < ApplicationController
     end
   end
 
+  def favorites
+    @stars = {}
+    for i in (1..5) do
+      @stars[i] = Image.where(rating: i).order("rating desc")
+    end
+  end
+
   def set_rating
     @image = Image.find(params[:id])
     @image.rating = params[:rating]

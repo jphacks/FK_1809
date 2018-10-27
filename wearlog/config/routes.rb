@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     collection do
       get :home
       get :get_calendar
+      get :favorites
       post :search
     end
     member do
