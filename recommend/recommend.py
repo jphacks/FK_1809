@@ -19,7 +19,7 @@ def crop_img(input_img, query_label="tops"):
 def main():
   parser = argparse.ArgumentParser(description='recommend system')
   parser.add_argument('--query', '-q', type=str, default="",
-                        help='image directry')
+                        help='query image path')
   parser.add_argument('--genre', '-g', type=str, default="tops",
                         help='genre')
   args = parser.parse_args()
@@ -39,9 +39,10 @@ def main():
   croped_query_img = crop_img(query_img, genre)
   comparing_hist = cv2.calcHist([croped_query_img], [0], None, [256], [0, 256])
   predict_indexes = annoy_model.get_nns_by_vector(comparing_hist, 5, search_k=-1)
-  predict_indexes = [data_path[idx] for idx in predict_indexes]
-  with open("recommend_image.json", "w") as f:
-    json.dump(predict_indexes, f)
+  predict_indexes = [data_path[idx].split("\\")[-1] for idx in predict_indexes]
+  #with open("recommend_image.json", "w") as f:
+  json_data =  json.dumps(predict_indexes)
+  print(json_data)
           
 if __name__=='__main__':
   main()
