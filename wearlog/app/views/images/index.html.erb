@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row">
+  <div class="row cal">
     <%= month_calendar(attribute: :created_at, events: @images) do |date, image|%>
       <%= date.strftime("%d") %>
       <br>

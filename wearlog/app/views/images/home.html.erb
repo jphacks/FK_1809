@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row" style="margin-top:15px;">
+  <div class="row cal" style="margin-top:15px;">
     <%= week_calendar(number_of_weeks: 1, attribute: :created_at, events: @images) do |date, image|%>
       <%= date.strftime("%d") %><br>
       <% unless image[0].blank? %>
@@ -26,15 +26,26 @@
     <%= link_to "more...", images_path, style: "font-size:15px;" %><br>
   </div>
   <hr class="border">
-  <% color_rate = [['#ea5959',60],['#eae159',30],['#60ea59',10]] %>
-  <div class="color_rate">
-    <% color_rate.each do |color| %>
-      <div style="height: 10px; width:<%= color[1] %>%; background-color: <%= color[0] %>"></div>
-    <% end %>
-  </div>
-  <br>
-
   <div class="col s12 m7">
     <%= render(partial: 'widget', cached: true) %>
   </div>
+
+  <%# color_rate %>
+  <% color_rate = [['#ea5959',60],['#eae159',30],['#60ea59',10]] %>
+  <div class="color_rate" style="margin-top: 25px;">
+    <% color_rate.each_with_index do |color, i| %>
+      <div style="height: 8px; width:<%= color[1] %>%; 
+        background-color: <%= color[0] %>;
+        border-radius: <%= i ==0 ? '35px' : '0px' %> <%= i ==2 ? '35px' : '0px' %> <%= i ==2 ? '35px' : '0px' %> <%= i ==0 ? '35px' : '0px' %> / <%= i ==0 ? '35px' : '0px' %> <%= i ==2 ? '35px' : '0px' %> <%= i ==2 ? '35px' : '0px' %> <%= i ==0 ? '35px' : '0px' %>;"></div>
+    <% end %>
+  </div>
+  <% color_rate2 = [['#ea5959',40],['#eae159',30],['#60ea59',30]] %>
+  <div class="color_rate" style="margin-top: 10px;">
+    <% color_rate2.each_with_index do |color, i| %>
+      <div style="height: 8px; width:<%= color[1] %>%; 
+        background-color: <%= color[0] %>;
+        border-radius: <%= i ==0 ? '35px' : '0px' %> <%= i ==2 ? '35px' : '0px' %> <%= i ==2 ? '35px' : '0px' %> <%= i ==0 ? '35px' : '0px' %> / <%= i ==0 ? '35px' : '0px' %> <%= i ==2 ? '35px' : '0px' %> <%= i ==2 ? '35px' : '0px' %> <%= i ==0 ? '35px' : '0px' %>;"></div>
+    <% end %>
+  </div>
+  <%# /color_rate %>
 <br>
