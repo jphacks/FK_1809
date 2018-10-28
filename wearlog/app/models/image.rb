@@ -7,7 +7,7 @@ class Image < ApplicationRecord
     return unless event
 
     token = ""
-    File.open("#{Rails.root.to_s}/lib/assets/taken.txt", mode = "rt"){|f|
+    File.open("#{Rails.root.to_s}/lib/assets/token.txt", mode = "rt"){|f|
       token = f.read
     }
     uri = URI.parse("https://notify-api.line.me/api/notify")

@@ -29,5 +29,4 @@
 /vendor/bundle/*
 /config/token.yaml
 
-lib/assets/token.txt
 app/assets/images/wear_images/????-*
