@@ -13,4 +13,4 @@ RUN pip install -r requirements.txt
 ENV FLASK_APP flask_sample.py
 ENV FLASK_DEBUG 1
 
-CMD ["gunicorn",  "-b", "0.0.0.0:5000", "flask_sample:app"]
+CMD ["gunicorn",  "-b", "0.0.0.0:80", "flask_sample:app"]

@@ -1,0 +1,14 @@
+version: "2"
+services:
+  app:
+    build: .
+    environment:
+      VIRTUAL_HOST: api.sawdev.info
+      LETSENCRYPT_HOST: api.sawdev.info
+      LETSENCRYPT_EMAIL: sawlow81wt@gmail.com
+    restart: always
+
+networks:
+  default:
+    external:
+      name: common-network
