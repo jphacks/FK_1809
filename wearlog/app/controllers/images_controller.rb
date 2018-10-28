@@ -4,6 +4,7 @@ class ImagesController < ApplicationController
   require 'googleauth'
   require 'googleauth/stores/file_token_store'
   require 'fileutils'
+  require 'open3'
 
   OOB_URI = 'http://localhost:3000/'.freeze
   APPLICATION_NAME = 'Google Calendar API Ruby Quickstart'.freeze
@@ -20,6 +21,18 @@ class ImagesController < ApplicationController
   # GET /images/1
   # GET /images/1.json
   def show
+    prog = File.expand_path('../recommend/recommend.py', Rails.root.to_s)
+    buf = "" # 何か出力があったときに読み取る
+    prog = "ls"
+    # begin
+    #   Open3.popen3(prog) do |sin, sout, serr|
+    #     buf = sout.read
+    #   end
+    # rescue => ex
+    #   logger.warn("ArtsController#export: #{ex.to_s}")
+    # end
+    # p buf
+    @analogy_images = Image.where("id < 10")
   end
 
   # GET /images/new
