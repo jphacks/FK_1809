@@ -1,6 +1,6 @@
 # Wearlog（ウェアログ）
 
-[![Product Name](image.png)](https://www.youtube.com/watch?v=G5rULR53uMk)
+[![Product Name](image.png)](https://www.youtube.com/watch?v=E5Hs6CRP7Mo&feature=youtu.be)
 
 ## 製品概要
 ### 衣服 X Tech
@@ -50,6 +50,9 @@
 #### フレームワーク・ライブラリ・モジュール
 * Ruby on Rails
 * OpenCV
+* chainercv 
+* scikit-learn
+* annoy(近似最近傍探索ライブラリ)
 
 #### デバイス
 * Raspberry Pi 3 model B
@@ -58,6 +61,7 @@
 
 ### 研究内容・事前開発プロダクト（任意）
 * カレンダー連携
+* 深層学習モデルの事前学習
 
 ### 独自開発技術（Hack Dayで開発したもの）
 #### 2日間に開発した独自の機能・技術
@@ -66,3 +70,4 @@
 * 人物画像のクロップ
 * 服のトップスとボトムスの検出
 * 服装のラベリング
+* メインカラーの抽出
