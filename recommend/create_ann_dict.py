@@ -1,23 +1,15 @@
 import cv2
-import glob
 import argparse
-from chainercv import utils
-from chainercv.links import SSD300
-from annoy import AnnoyIndex
+import json
 label_name = ("tops", "bottoms")
-model = SSD300(n_fg_class=len(label_name), pretrained_model='via_model')
 
-def crop_img(input_img, query_label="tops"):
-  bboxes, labels, scores = model.predict([input_img])
-  query_index = label_name.index(query_label)
-  if query_index in labels[0]:
-    bbox = [int(i) for i in bboxes[0][0]]
-    croped_img = input_img[:, bbox[0]:bbox[2], bbox[1]:bbox[3]]
-    return croped_img
+def crop_img(input_img, bbox):
+  croped_img = input_img[:, bbox[0]:bbox[2], bbox[1]:bbox[3]]
+  return croped_img
 
 def main():
   parser = argparse.ArgumentParser(description='create ann model')
-  parser.add_argument('--imgdir', '-d', type=str, default="",
+  parser.add_argument('--imgdir', '-d', type=str, default="D:/GitHub/FK_1809/wearlog/app/assets/images/wear_images",
                         help='image directry')
   parser.add_argument('--genre', '-g', type=str, default="tops",
                         help='genre')
@@ -27,6 +19,9 @@ def main():
   data_dir = args.imgdir
   if data_dir == "":
     raise ""
+  with open("wear_info.json", "r") as f:
+    json_data = json.load(f)
+  
   data_path = glob.glob("{}/*".format(data_dir))
   with open("img_list.txt", "w") as f:
     f.write("\n".join(data_path))
