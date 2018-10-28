@@ -6,7 +6,7 @@
         <% if File.exist? "#{Rails.root}/app/assets/images/wear_images/#{image[0].image_path}" %>
           <%= link_to image_tag("wear_images/#{image[0].image_path}", style: "width:100%;", class: "scale-transition"), image_path(image[0].id) %><br>
         <% else %>
-          <%= image_tag("no_wear.jpg", style: "width:100%;") %><br>
+          <div style="height: 50.36px"><span style="margin:1px"></span></div>
         <% end %>
       <% else %>
         <%# ここのheightは写真の大きさを確認後修正 %>
