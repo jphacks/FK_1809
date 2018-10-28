@@ -4,4 +4,8 @@ namespace :image do
     image.image_path = args[:path] 
     image.save
   end
+
+  task :send_notify => :environment do
+    Image.send_notify
+  end
 end
