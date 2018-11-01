@@ -71,3 +71,12 @@
 * 服のトップスとボトムスの検出
 * 服装のラベリング
 * メインカラーの抽出
+
+####
+```
+docker-compose build
+docker-compose run --rm spring rails db:create
+docker-compose run --rm spring rails db:migrate
+docker-compose up -d
+
+```
