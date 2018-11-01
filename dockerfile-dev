@@ -1,0 +1,36 @@
+FROM ruby:2.5.1
+
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev
+
+RUN curl -sl https://deb.nodesource.com/setup_8.x | bash - \
+  && apt-get install -y nodejs
+
+RUN apt-get update && apt-get install -y curl apt-transport-https wget && \
+  curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+  echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+  apt-get update && apt-get install -y yarn
+
+ENV ENTRYKIT_VERSION 0.4.0
+
+RUN wget https://github.com/progrium/entrykit/releases/download/v${ENTRYKIT_VERSION}/entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz \
+  && tar -xvzf entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz \
+  && rm entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz \
+  && mv entrykit /bin/entrykit \
+  && chmod +x /bin/entrykit \
+  && entrykit --symlink
+
+
+RUN mkdir /myapp
+WORKDIR /myapp
+
+RUN apt-get install -y python3-dev
+RUN curl -kL https://bootstrap.pypa.io/get-pip.py | python3
+ADD requirements.txt /myapp
+RUN python3 -m pip install -r requirements.txt
+
+ENTRYPOINT [ \
+  "prehook", "ruby -v", "--", \
+  "prehook", "bundle install -j3 --quiet", "--", \
+  "prehook", "yarn install", "--"]
+
+ADD ./wearlog /myapp
