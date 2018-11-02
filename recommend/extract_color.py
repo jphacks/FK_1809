@@ -23,8 +23,8 @@ def extract_main_color(img_path, k_num):
   hist = np.array(hist)[sorted_index[:-1]]
   hist = hist / hist.sum()
   color_list = cluster.cluster_centers_[sorted_index[:-1]]
-  #plt.bar(np.arange(1,k_num), hist, color=cluster.cluster_centers_[sorted_index[:-1]]/256)
-  #plt.show()
+  plt.bar(np.arange(1,k_num), hist, color=cluster.cluster_centers_[sorted_index[:-1]]/256)
+  plt.show()
   res = [{"color": c, "percent": h} for c, h in zip(color_list, hist)]
   return res
 
