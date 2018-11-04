@@ -1,3 +1,4 @@
+import os
 import json
 import cv2
 import argparse
@@ -25,11 +26,13 @@ def main():
   genre = args.genre
   
   data_path = []
-  with open("img_list.txt", "r") as f:
+  base = os.path.dirname(os.path.abspath(__file__))
+  list_path = os.path.normpath(os.path.join(base, './img_list.txt'))
+  with open(list_path, "r") as f:
     for line in f.readlines():
       data_path.append(line.rstrip())
   annoy_model = AnnoyIndex(256)
-  annoy_model.load("{}.ann".format(genre))
+  annoy_model.load(base+"/{}.ann".format(genre))
 
   query_path = args.query
   bbox = [int(item) for item in args.bbox.split(",")]

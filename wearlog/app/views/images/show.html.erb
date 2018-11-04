@@ -47,7 +47,8 @@
     <h5 style="margin-left:10px; margin-top:20px;"> 類似する服 </h5>
     <hr class="border">
     <div class="row">
-        <% @analogy_images.each do |image| %>
+        <% @analogy_images.each do |path| %>
+          <% image = Image.find_by(image_path: path) %>
           <div class="col s4">
             <p> <%= image.created_at.strftime("%m/%d") %> </p>
             <%= link_to image_tag("wear_images/#{image.image_path}", style: "width:100%;"), image_path(image.id) %><br>
