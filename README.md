@@ -1,6 +1,6 @@
 # Wearlog（ウェアログ）
 
-[![WearLog](wearlog/app/assets/images/WearLog_thmb.jpg)](https://www.youtube.com/watch?v=E5Hs6CRP7Mo&feature=youtu.be)
+[![WearLog](wearlog/app/assets/images/WearLog_thmb.jpg)](https://youtu.be/y6IPee5lbOg)
 
 ## 製品概要
 ### 衣服 X Tech
@@ -71,3 +71,12 @@
 * 服のトップスとボトムスの検出
 * 服装のラベリング
 * メインカラーの抽出
+
+####
+```
+docker-compose build
+docker-compose run --rm spring rails db:create
+docker-compose run --rm spring rails db:migrate
+docker-compose up -d
+
+```

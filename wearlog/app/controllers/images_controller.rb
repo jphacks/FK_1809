@@ -21,18 +21,16 @@ class ImagesController < ApplicationController
   # GET /images/1
   # GET /images/1.json
   def show
-    prog = File.expand_path('../recommend/recommend.py', Rails.root.to_s)
+    prog = "python3 /recommend/recommend.py -q /myapp/app/assets/images/wear_images/#{@image.image_path} -b '62, 92, 237, 228'"
     buf = "" # 何か出力があったときに読み取る
-    prog = "ls"
-    # begin
-    #   Open3.popen3(prog) do |sin, sout, serr|
-    #     buf = sout.read
-    #   end
-    # rescue => ex
-    #   logger.warn("ArtsController#export: #{ex.to_s}")
-    # end
-    # p buf
-    @analogy_images = Image.where("id < 10")
+    begin
+      Open3.popen3(prog) do |sin, sout, serr|
+        buf = sout.read
+      end
+    rescue => ex
+      logger.warn("ArtsController#export: #{ex.to_s}")
+    end
+    @analogy_images = JSON.parse(buf)
   end
 
   # GET /images/new
